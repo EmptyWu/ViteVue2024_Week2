@@ -1,0 +1,20 @@
+services:
+  app:
+    image: week2
+    container_name: vitevue-week2
+    build: .
+    ports:
+      - "5170-5179:5170-5179"
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+      - .npm-cache:/app/.npm-cache
+      - .ssh:/root/.ssh
+      - /etc/localtime:/etc/localtime:ro
+      - /erc/timezone:/erc/timezone:ro
+    environment:
+      - NODE_ENV=development
+      - TZ=Asia/Taipei
+volumes:
+  npm-cache:
+  node_modules:
