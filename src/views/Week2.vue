@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import {ref , onMounted}from 'vue'
-import axios,{ AxiosResponse } from 'axios'
+import {ref , onMounted}from 'vue';
+import axios from 'axios';
+import type {AxiosResponse} from 'axios';
 const site='https://todolist-api.hexschool.io/';
 const email =ref<string>('');
 const password=ref<string>('');
@@ -120,18 +121,20 @@ const checksign_out =async():Promise<void>=>{
         }
     }
 };
-
+interface TodoEdit {
+  [key: string]: string;  // 允许使用字符串类型的键
+}
 // todos/
 const token=ref<string>('');
 const todos=ref<Todo[]>([]);
 const content=ref<string>('');
 const todomsg=ref<string>('');
-const todoEdit = ref({});
+const todoEdit = ref<TodoEdit>({});
 
 // 取得所有 todos
 const addcontent=async():Promise<void>=>{
     try{
-        const response:AxiosResponse<todoResponse>=await axios.post(`${site}todos/`,{
+        const response:AxiosResponse<signResponse>=await axios.post(`${site}todos/`,{
             content:content.value
         },{
             headers: {Authorization: token.value}
@@ -185,16 +188,18 @@ const deltodo=async(id:string):Promise<void>=>{
 const updatetodo=async(id:string):Promise<void>=>{
     try{
         const todo=todos.value.find((todo)=>todo.id===id);
-        todo.content = todoEdit.value[id];
-        const response:AxiosResponse<deltodoResponse>=await axios.put(`${site}todos/${id}`,todo,{
-            headers: {Authorization: token.value}
-        });
-        console.log(response.data);
-        getTodos();
-        todoEdit.value = {
-            ...todoEdit.value,
-            [id]: '',
-        };
+        if(todo){
+            todo.content = todoEdit.value[id];
+            const response:AxiosResponse<deltodoResponse>=await axios.put(`${site}todos/${id}`,todo,{
+                headers: {Authorization: token.value}
+            });
+            console.log(response.data);
+            getTodos();
+            todoEdit.value = {
+                ...todoEdit.value,
+                [id]: '',
+            };
+        }
     }catch(error:any){
         if(axios.isAxiosError(error)){
             todomsg.value = `修改代辦事項失敗，${error.response?.data?.message || error.message}`;

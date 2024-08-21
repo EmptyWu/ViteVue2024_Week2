@@ -1,5 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Week2 from '../views/Week2.vue'
+import { createRouter, createWebHistory} from 'vue-router';
+import Week2 from '../views/Week2.vue';
+
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
