@@ -1,3 +1,13 @@
+# docker
+
+```
+    #使用 docker 進行vitw vue 安裝
+    docker build -t node20-dev . 
+    docker run -it -v E:\docker\ViteVue2024_Week2:/app/week2 -name node20=container node20-dev
+
+    npm create vite@latest
+```
+
 # week3
 
 This template should help get you started developing with Vue 3 in Vite.
